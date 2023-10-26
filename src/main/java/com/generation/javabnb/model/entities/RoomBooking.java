@@ -29,5 +29,5 @@ public class RoomBooking
 	private Room room;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "email_user")
-	private User user;
+	private User customer;
 }
