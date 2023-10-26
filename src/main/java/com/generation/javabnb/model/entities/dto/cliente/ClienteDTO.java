@@ -16,6 +16,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 public class ClienteDTO extends GenericClienteDTO 
 {
 	private List<OrdineDTO>ordini;
