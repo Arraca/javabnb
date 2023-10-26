@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.generation.javabnb.model.dto.room.RoomDTOnoList;
 import com.generation.javabnb.model.dto.user.CustomerDTOnoList;
 import com.generation.javabnb.model.entities.Room;
 import com.generation.javabnb.model.entities.RoomBooking;
