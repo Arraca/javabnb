@@ -1,9 +1,16 @@
 package com.generation.javabnb.model.dto.user;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.generation.javabnb.model.dto.roombooking.RoomBookingDTO;
 import com.generation.javabnb.model.entities.User;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class EmployeeDTO extends GenericUserDTO 
 {
 

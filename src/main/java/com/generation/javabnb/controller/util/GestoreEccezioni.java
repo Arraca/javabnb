@@ -67,7 +67,7 @@ public class GestoreEccezioni
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e)
 	{
-		return new ResponseEntity<String>("Username gia presente nel sistema. Inserire un username valido", HttpStatus.CONFLICT);
+		return new ResponseEntity<String>("Email gia presente nel sistema. Inserire una email valida", HttpStatus.CONFLICT);
 	}
 	
 	@ExceptionHandler(CannotCreateTransactionException.class)

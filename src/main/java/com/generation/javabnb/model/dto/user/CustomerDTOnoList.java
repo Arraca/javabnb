@@ -1,7 +1,15 @@
 package com.generation.javabnb.model.dto.user;
 
+import java.util.List;
+
+import com.generation.javabnb.model.dto.roombooking.RoomBookingDTO;
 import com.generation.javabnb.model.entities.User;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class CustomerDTOnoList extends GenericUserDTO
 {
 	

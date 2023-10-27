@@ -1,33 +1,41 @@
 package com.generation.javabnb.model.entities.dto.season;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import com.generation.javabnb.model.entities.Season;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class SeasonDTO
 {
-	protected String season;
-	protected LocalDate begin;
-	protected LocalDate end;
+	protected Integer id;
+	protected String name;
+	protected String begin;
+	protected String end;
 	protected Double percent;
 	
 	public SeasonDTO() {}
 	
 	public SeasonDTO(Season s) 
 	{
-		season=s.getSeason();
-		begin=s.getBegin();
-		end=s.getEnd();
+		id=s.getId();
+		name=s.getName();
+		begin=s.getBegin()+"";
+		end=s.getEnd()+"";
 		percent=s.getPercent();
 		
 	}
 	
-	public boolean DateIsValid(LocalDate begin,LocalDate end)
+	public boolean DateIsValid(String begin,String end)
 	{
 		try 
 		{
-			if (end.isAfter(begin))
+			if (LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd")).isAfter(LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
 	            return true;
 			else 
 				return false;
@@ -41,16 +49,24 @@ public class SeasonDTO
 	
 	public boolean isValid()
 	{
-		return season!=null && !season.isBlank()  &&
-			   begin != null && end != null && DateIsValid(begin, end);
-		
-		
-		
-		
+		return name!=null && !name.isBlank()  &&
+			   begin != null && end != null;
 		
 		
 		
 	}
 	
+	public Season convertToSeason()
+	{
+		Season res = new Season();
+		res.setId(id);
+		res.setName(name);
+		res.setBegin(LocalDate.parse(begin, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		res.setEnd(LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		res.setPercent(percent);
+		
+		
+		return res;
+	}
 	
 }

@@ -8,7 +8,11 @@ import com.generation.javabnb.model.entities.RoomBooking;
 import com.generation.javabnb.model.entities.User;
 
 import javassist.expr.NewArray;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class CustomerDTO extends GenericUserDTO 
 {
 	private Integer id;
