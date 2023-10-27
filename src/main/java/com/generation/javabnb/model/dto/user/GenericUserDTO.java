@@ -1,10 +1,16 @@
 package com.generation.javabnb.model.dto.user;
 
 import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.generation.javabnb.model.entities.User;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public abstract class GenericUserDTO 
 {
 	private Integer id;
@@ -34,6 +40,19 @@ public abstract class GenericUserDTO
 
 	
 	public abstract User convertToUser();
+
+	public boolean isEmailValid()
+	{
+		if(email==null || email.isBlank())
+			return false;
+		String regex = "^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+
+		Pattern pattern = Pattern.compile(regex);
+		
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
+		
+	}
 
 
 

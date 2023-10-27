@@ -7,6 +7,10 @@ import javax.persistence.OneToMany;
 import com.generation.javabnb.model.entities.Room;
 import com.generation.javabnb.model.entities.RoomBooking;
 
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
 public abstract class GenericRoomDTO 
 {
 	private Integer id;
@@ -30,5 +34,20 @@ public abstract class GenericRoomDTO
 	};
 	
 	public abstract Room convertToRoom();
+	
+	/**
+	 * Il metodo controlla che una room sia valida. 
+	 * Una Room è valida quando:
+	 * - 
+	 *
+	 * @return
+	 */
+	public boolean isValid()
+	{
+		return 	name != null 		&& !name.isBlank() 		&&
+				capacity != null 	&& capacity > 0 		&&
+				base_price != null 	&& base_price > 0 		&&
+				img_url != null 	&& !img_url.isBlank();
+	}
 
 }
