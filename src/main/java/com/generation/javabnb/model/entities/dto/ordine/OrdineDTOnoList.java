@@ -1,7 +1,7 @@
 package com.generation.javabnb.model.entities.dto.ordine;
 
 import com.generation.javabnb.model.entities.Ordine;
-import com.generation.javabnb.model.entities.dto.prodotto.ProdottoDTOnoList;
+import com.generation.javabnb.model.entities.dto.season.ProdottoDTOnoList;
 
 import lombok.Getter;
 import lombok.Setter;

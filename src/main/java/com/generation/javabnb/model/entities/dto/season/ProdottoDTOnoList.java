@@ -1,4 +1,4 @@
-package com.generation.javabnb.model.entities.dto.prodotto;
+package com.generation.javabnb.model.entities.dto.season;
 
 import com.generation.javabnb.model.entities.Prodotto;
 

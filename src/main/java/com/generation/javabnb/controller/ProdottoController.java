@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.javabnb.exception.InvalidEntityException;
 import com.generation.javabnb.model.entities.Prodotto;
-import com.generation.javabnb.model.entities.dto.prodotto.ProdottoDTO;
-import com.generation.javabnb.model.entities.dto.prodotto.ProdottoDTOnoList;
+import com.generation.javabnb.model.entities.dto.season.ProdottoDTO;
+import com.generation.javabnb.model.entities.dto.season.ProdottoDTOnoList;
 import com.generation.javabnb.model.repositories.ClienteRepository;
 import com.generation.javabnb.model.repositories.OrdineRepository;
 import com.generation.javabnb.model.repositories.ProdottoRepository;

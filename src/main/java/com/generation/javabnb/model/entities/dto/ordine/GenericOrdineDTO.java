@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.generation.javabnb.model.entities.Ordine;
 import com.generation.javabnb.model.entities.Prodotto;
-import com.generation.javabnb.model.entities.dto.prodotto.ProdottoDTOnoList;
+import com.generation.javabnb.model.entities.dto.season.ProdottoDTOnoList;
 
 import lombok.Getter;
 import lombok.Setter;
