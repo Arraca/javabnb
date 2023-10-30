@@ -1,6 +1,6 @@
 package com.generation.javabnb.controller;
 
-<<<<<<< HEAD
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import com.generation.javabnb.model.dto.room.RoomDTOnoList;
 import com.generation.javabnb.model.repositories.RoomRepository;
 
 import javassist.expr.NewArray;
-=======
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -38,7 +38,6 @@ import com.generation.javabnb.model.entities.User;
 import com.generation.javabnb.model.repositories.RoomRepository;
 
 
->>>>>>> a756b0cbbfdccebe340054c570e64ec094abbc1f
 
 @RestController
 @CrossOrigin
@@ -87,8 +86,6 @@ public class RoomController
 	
 	//--------------------------------------------------GET ONE BY ID-------------------------------------------------------
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Metodo che restituisce una room completa di lista in base all'id. 
 	 * Parametro in ingresso : Integer id.
@@ -224,7 +221,6 @@ public class RoomController
 	
 	
 	
->>>>>>> a756b0cbbfdccebe340054c570e64ec094abbc1f
 	
 
 }
