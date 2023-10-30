@@ -59,15 +59,12 @@ public class JwtAuthenticationController {
 	
 	
 	@PostMapping("/register")
-	public ResponseEntity<?> register(@RequestBody CustomerDTO customer)
+	public ResponseEntity<?> register(@RequestBody UserInDb user)
 	{
-//		UserInDb user = new UserInDb();
-//		user.setUsername(customer.getUsername());
-		customer.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));//criptando la password
-//		repo.save(user);
-		uRepo.save(customer.convertToUser());
+		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));//criptando la password
+		repo.save(user);
 		UserDetails userDetails = jwtInMemoryUserDetailsService
-				.loadUserByUsername(customer.getUsername());
+				.loadUserByUsername(user.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
 		return ResponseEntity.ok(new JwtResponse(token));
