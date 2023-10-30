@@ -16,7 +16,7 @@ public class EmployeeDTO extends GenericUserDTO
 
 	private Integer id;
 	
-	private String email;
+	private String username;
 	private String password;
 	private String type;
 	
@@ -44,7 +44,7 @@ public class EmployeeDTO extends GenericUserDTO
 	{
 		User res = new User();
 		res.setId(id);
-		res.setEmail(email);
+		res.setUsername(username);
 		res.setPassword(password);
 		res.setType(type);
 		res.setName(name);

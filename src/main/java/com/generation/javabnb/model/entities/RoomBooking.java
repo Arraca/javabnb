@@ -19,15 +19,19 @@ import lombok.Setter;
 public class RoomBooking
 {
 	@Id
+<<<<<<< HEAD
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+=======
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+>>>>>>> 91c9363ac771d4636fe9748f6403db350bcf8902
 	private Integer id;
 	private LocalDate checkIn;
 	private LocalDate checkOut;
 	private Double modPrice;
 	private Double totalPrice;
-	private String email;
+//	private String email;
 	private Boolean saved;
-	private Season season;
+	//private Season season;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "room_id")

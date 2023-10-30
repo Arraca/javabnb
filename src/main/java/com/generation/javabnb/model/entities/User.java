@@ -21,7 +21,7 @@ public class User
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Id
-	private String email;
+	private String username;
 	private String password;
 	private String type;
 	
@@ -30,7 +30,7 @@ public class User
 	private LocalDate dob;
 	private String img_url;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "customer")
 	private List<RoomBooking> bookings;
 
 

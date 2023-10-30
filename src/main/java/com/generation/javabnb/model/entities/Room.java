@@ -17,7 +17,11 @@ import lombok.Setter;
 public class Room 
 {
 	@Id
+<<<<<<< HEAD
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+=======
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+>>>>>>> 91c9363ac771d4636fe9748f6403db350bcf8902
 	private Integer id;
 	private String name;
 	private Integer capacity;

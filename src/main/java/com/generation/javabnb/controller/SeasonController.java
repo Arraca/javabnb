@@ -12,11 +12,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.javabnb.model.entities.Season;
 import com.generation.javabnb.model.entities.dto.season.SeasonDTO;
+=======
+import org.springframework.web.bind.annotation.RestController;
+
+import com.generation.javabnb.model.entities.Season;
+import com.generation.javabnb.model.dto.season.SeasonDTO;
+>>>>>>> 91c9363ac771d4636fe9748f6403db350bcf8902
 import com.generation.javabnb.model.repositories.SeasonRepository;
 
 

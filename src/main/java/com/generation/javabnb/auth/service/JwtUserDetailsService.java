@@ -16,7 +16,7 @@ import com.generation.javabnb.auth.model.UserInDb;
 public class JwtUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	UserRepository repo;
+	UserRepositoryAuth repo;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 

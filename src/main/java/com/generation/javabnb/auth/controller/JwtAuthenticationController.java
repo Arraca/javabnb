@@ -20,7 +20,9 @@ import com.generation.javabnb.auth.config.JwtTokenUtil;
 import com.generation.javabnb.auth.model.JwtRequest;
 import com.generation.javabnb.auth.model.JwtResponse;
 import com.generation.javabnb.auth.model.UserInDb;
-import com.generation.javabnb.auth.service.UserRepository;
+import com.generation.javabnb.auth.service.UserRepositoryAuth;
+import com.generation.javabnb.model.dto.user.CustomerDTO;
+import com.generation.javabnb.model.repositories.UserRepository;
 
 @RestController
 @CrossOrigin
@@ -32,7 +34,9 @@ public class JwtAuthenticationController {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	@Autowired
-	private UserRepository repo;
+	private UserRepositoryAuth repo;
+	@Autowired
+	private UserRepository uRepo;
 
 	
 	
@@ -59,7 +63,6 @@ public class JwtAuthenticationController {
 	{
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));//criptando la password
 		repo.save(user);
-		
 		UserDetails userDetails = jwtInMemoryUserDetailsService
 				.loadUserByUsername(user.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);

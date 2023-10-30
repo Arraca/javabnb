@@ -11,18 +11,15 @@ import javassist.expr.NewArray;
 import lombok.Getter;
 import lombok.Setter;
 
+<<<<<<< HEAD
 @Setter
 @Getter
+=======
+@Getter
+@Setter
+>>>>>>> 91c9363ac771d4636fe9748f6403db350bcf8902
 public class CustomerDTO extends GenericUserDTO 
 {
-	private Integer id;
-	
-	private String email;
-	private String password;
-	private String type;
-	
-	private String name;
-	private String surname;
 	
 	private List<RoomBookingDTO> bookings;
 
@@ -44,12 +41,6 @@ public class CustomerDTO extends GenericUserDTO
 	public User convertToUser() 
 	{
 		User res = new User();
-		res.setId(id);
-		res.setEmail(email);
-		res.setPassword(password);
-		res.setType(type);
-		res.setName(name);
-		res.setSurname(surname);
 		res.setBookings(this.bookings.stream().map(bookingDTO -> bookingDTO.convertToRoomBooking()).toList());
 
 //		List<RoomBooking> listaBookings = new ArrayList<RoomBooking>();

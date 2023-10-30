@@ -11,13 +11,18 @@ import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+
 @Getter
 @Setter
+@Entity
 public class Season 
 {
 	@Id
+<<<<<<< HEAD
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+=======
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+>>>>>>> 91c9363ac771d4636fe9748f6403db350bcf8902
 	private Integer id;
 	private String name;
 	private LocalDate begin;
