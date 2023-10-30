@@ -29,7 +29,9 @@ public class Season
 	private LocalDate end;
 	private Double percent;
 	
+	public Season() {};
 	
+<<<<<<< HEAD
 //	 public Season(String season, String begin, String end, Double percent) 
 //	 {
 //	    this.name = season;
@@ -45,5 +47,16 @@ public class Season
 //	    this.end = end; 
 //	    this.percent = percent;
 //    }
+=======
+	 public Season(String season, String begin, String end, Double percent) 
+	 {
+	    this.name = season;
+	    this.begin = LocalDate.parse(begin, DateTimeFormatter.ofPattern("yyyy-MM-dd")); 
+	    this.end = LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd")); 
+	    this.percent = percent;
+    }
+	
+	
+>>>>>>> e8c8995452c0547b3271ae9638ee8cb15b441d69
 	
 }
