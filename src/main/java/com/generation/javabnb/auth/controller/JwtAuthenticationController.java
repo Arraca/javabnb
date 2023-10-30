@@ -21,6 +21,8 @@ import com.generation.javabnb.auth.model.JwtRequest;
 import com.generation.javabnb.auth.model.JwtResponse;
 import com.generation.javabnb.auth.model.UserInDb;
 import com.generation.javabnb.auth.service.UserRepositoryAuth;
+import com.generation.javabnb.model.dto.user.CustomerDTO;
+import com.generation.javabnb.model.repositories.UserRepository;
 
 @RestController
 @CrossOrigin
@@ -33,6 +35,8 @@ public class JwtAuthenticationController {
 	private JwtTokenUtil jwtTokenUtil;
 	@Autowired
 	private UserRepositoryAuth repo;
+	@Autowired
+	private UserRepository uRepo;
 
 	
 	
@@ -55,13 +59,15 @@ public class JwtAuthenticationController {
 	
 	
 	@PostMapping("/register")
-	public ResponseEntity<?> register(@RequestBody UserInDb user)
+	public ResponseEntity<?> register(@RequestBody CustomerDTO customer)
 	{
-		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));//criptando la password
-		repo.save(user);
-		
+//		UserInDb user = new UserInDb();
+//		user.setUsername(customer.getUsername());
+		customer.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));//criptando la password
+//		repo.save(user);
+		uRepo.save(customer.convertToUser());
 		UserDetails userDetails = jwtInMemoryUserDetailsService
-				.loadUserByUsername(user.getUsername());
+				.loadUserByUsername(customer.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
 		return ResponseEntity.ok(new JwtResponse(token));

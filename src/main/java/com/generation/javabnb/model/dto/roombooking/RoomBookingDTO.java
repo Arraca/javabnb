@@ -14,6 +14,11 @@ import com.generation.javabnb.model.entities.RoomBooking;
 import com.generation.javabnb.model.entities.Season;
 import com.generation.javabnb.model.entities.User;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class RoomBookingDTO  
 {
 	

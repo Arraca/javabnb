@@ -287,6 +287,8 @@ public class UserController
 	}
 	
 	
+	//------------------------------------------------------DELETE CUSTOMER------------------------------------------------------------
+	
 	@DeleteMapping("users/customers/{email}")
     public void deleteOne(@PathVariable String email)
     {

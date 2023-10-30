@@ -13,14 +13,14 @@ import lombok.Setter;
 @Setter
 public abstract class GenericUserDTO 
 {
-	private Integer id;
+	protected Integer id;
 	
-	private String username;
-	private String password;
-	private String type;
+	protected String username;
+	protected String password;
+	protected String type;
 	
-	private String name;
-	private String surname;
+	protected String name;
+	protected String surname;
 	
 	public GenericUserDTO() 
 	{
