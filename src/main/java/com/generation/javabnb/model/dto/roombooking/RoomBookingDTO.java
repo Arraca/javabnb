@@ -38,7 +38,9 @@ public class RoomBookingDTO
 		this.totalPrice=roomBooking.getTotalPrice();
 //		this.email = roomBooking.getEmail();
 		this.saved = roomBooking.getSaved();
-		this.season = roomBooking.getSeason();
+//		this.season = roomBooking.getSeason();
+		this.room = new RoomDTOnoList(roomBooking.getRoom());
+		this.customer = new CustomerDTOnoList(roomBooking.getCustomer());
 	}
 
 	
@@ -52,7 +54,7 @@ public class RoomBookingDTO
 		res.setTotalPrice(totalPrice);
 //		res.setEmail(email);
 		res.setSaved(saved);
-		res.setSeason(season);
+//		res.setSeason(season);
 		res.setRoom(room.convertToRoom());
 		res.setCustomer(customer.convertToUser());
 		return res;
@@ -82,7 +84,8 @@ public class RoomBookingDTO
 	public boolean isValid()
 	{
 		return 	checkIn!=null 					&& checkOut !=null 		&&
-				DateIsValid(checkIn, checkOut) 	&& modPrice!=null 		&&
+				DateIsValid(checkIn, checkOut) 	&& 
+				modPrice!=null 		&&
 				modPrice > 0 					&& totalPrice !=null 	&&
 				totalPrice > 0 					&& room != null 		&& 
 				customer != null;

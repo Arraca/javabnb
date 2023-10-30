@@ -20,7 +20,7 @@ import com.generation.javabnb.auth.config.JwtTokenUtil;
 import com.generation.javabnb.auth.model.JwtRequest;
 import com.generation.javabnb.auth.model.JwtResponse;
 import com.generation.javabnb.auth.model.UserInDb;
-import com.generation.javabnb.auth.service.UserRepository;
+import com.generation.javabnb.auth.service.UserRepositoryAuth;
 
 @RestController
 @CrossOrigin
@@ -32,7 +32,7 @@ public class JwtAuthenticationController {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 	@Autowired
-	private UserRepository repo;
+	private UserRepositoryAuth repo;
 
 	
 	

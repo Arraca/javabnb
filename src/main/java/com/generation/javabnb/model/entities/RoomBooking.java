@@ -27,7 +27,7 @@ public class RoomBooking
 	private Double totalPrice;
 //	private String email;
 	private Boolean saved;
-	private Season season;
+	//private Season season;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "room_id")

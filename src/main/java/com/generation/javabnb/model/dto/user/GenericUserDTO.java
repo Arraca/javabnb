@@ -15,7 +15,7 @@ public abstract class GenericUserDTO
 {
 	private Integer id;
 	
-	private String email;
+	private String username;
 	private String password;
 	private String type;
 	
@@ -30,7 +30,7 @@ public abstract class GenericUserDTO
 	public GenericUserDTO(User user) 
 	{
 		this.id=user.getId();
-		this.email=user.getEmail();
+		this.username=user.getUsername();
 		this.password=user.getPassword();
 		this.type=user.getType();
 		this.name=user.getName();
@@ -43,15 +43,24 @@ public abstract class GenericUserDTO
 
 	public boolean isEmailValid()
 	{
-		if(email==null || email.isBlank())
+		if(username==null || username.isBlank())
 			return false;
 		String regex = "^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
 		Pattern pattern = Pattern.compile(regex);
 		
-		Matcher matcher = pattern.matcher(email);
+		Matcher matcher = pattern.matcher(username);
 		return matcher.matches();
 		
+	}
+	
+	public boolean isValid()
+	{
+		return 	username != null 		&& isEmailValid() 		&& 
+				password != null 	&& !password.isBlank() 	&&
+				type != null 		&& !type.isBlank() 		&&
+				name != null	 	&& !name.isBlank() 		&&
+				surname != null 	&& !surname.isBlank()	;
 	}
 
 

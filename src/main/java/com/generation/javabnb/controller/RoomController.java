@@ -1,5 +1,6 @@
 package com.generation.javabnb.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -16,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.generation.javabnb.exception.InvalidEntityException;
 import com.generation.javabnb.model.dto.room.RoomDTO;
 import com.generation.javabnb.model.dto.room.RoomDTOnoList;
+import com.generation.javabnb.model.dto.user.CustomerDTO;
+import com.generation.javabnb.model.entities.Room;
+import com.generation.javabnb.model.entities.RoomBooking;
+import com.generation.javabnb.model.entities.User;
 import com.generation.javabnb.model.repositories.RoomRepository;
 
 
@@ -133,7 +138,11 @@ public class RoomController
 		if(!toSave.isValid())
 			throw new InvalidEntityException("La camera che si desidera inserire non è valida");
 		
-		return new RoomDTOnoList(rRepo.save(toSave.convertToRoom())); 
+		Room res = toSave.convertToRoom();
+		res.setBookings(new ArrayList<RoomBooking>());
+
+		
+		return new RoomDTOnoList(rRepo.save(res)); 
 	}
 	
 	//------------------------------------------PUT---------------------------------------------------
@@ -151,16 +160,28 @@ public class RoomController
 	 * @return
 	 */
 	@PutMapping("rooms/{id}")
-	public RoomDTO updateRoom(@RequestBody RoomDTO toInsert, @PathVariable Integer id)
+	public RoomDTO updateRoom(@RequestBody RoomDTO toUpdate, @PathVariable Integer id)
 	{
 		if(!rRepo.findById(id).isEmpty())
 			throw new NoSuchElementException("Non ci sono stanze con id "+id+" nel DB, non posso eseguire la modifica!");
-		if(!toInsert.isValid())
+		if(!toUpdate.isValid())
 			throw new InvalidEntityException("La camera che si desidera inserire non è valida");
 		
-		toInsert.setId(id);
 		
-		return new RoomDTO(rRepo.save(toInsert.convertToRoom()));
+	      Room old = rRepo.findById(id).get();
+	      Room room = toUpdate.convertToRoom();
+	      room.setId(id);
+	      room.setBookings(new ArrayList<RoomBooking>());
+	      
+	      if(old.getBookings().size()>0)
+	    	  for(RoomBooking rb : old.getBookings())
+	    	  {
+	    		  rb.setRoom(room);
+	    		  room.getBookings().add(rb);
+	    	  }
+	    		  
+	
+	      return new RoomDTO(rRepo.save(room));
 
 	}
 	
