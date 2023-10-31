@@ -4,39 +4,27 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeParseException;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import com.generation.javabnb.model.dto.customer.CustomerDTOnoList;
 import com.generation.javabnb.model.dto.room.RoomDTOnoList;
-import com.generation.javabnb.model.entities.Room;
 import com.generation.javabnb.model.entities.RoomBooking;
-import com.generation.javabnb.model.entities.Season;
-import com.generation.javabnb.model.entities.Customer;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-public class RoomBookingDTO  
+public class RoomBookingDTOnoCustomer 
 {
-	
 	private Integer id;
 	private LocalDate checkIn;
 	private LocalDate checkOut;
 	private Double totalPrice;
 	private Boolean saved;
-	private Season season;
 
 	private RoomDTOnoList room;
-	private CustomerDTOnoList customer;
 	
-	public RoomBookingDTO() {};
+	public RoomBookingDTOnoCustomer() {};
 
-	public RoomBookingDTO(RoomBooking roomBooking)
+	public RoomBookingDTOnoCustomer(RoomBooking roomBooking)
 	{
 		this.id=roomBooking.getId();
 		this.checkIn=roomBooking.getCheckIn();
@@ -44,7 +32,6 @@ public class RoomBookingDTO
 		this.totalPrice=roomBooking.getTotalPrice();
 		this.saved = roomBooking.getSaved();
 		this.room = new RoomDTOnoList(roomBooking.getRoom());
-		this.customer = new CustomerDTOnoList(roomBooking.getCustomer());
 	}
 
 	
@@ -57,7 +44,6 @@ public class RoomBookingDTO
 		res.setTotalPrice(totalPrice);
  		res.setSaved(saved);
 		res.setRoom(room.convertToRoom());
-		res.setCustomer(customer.convertToCustomer());
 		return res;
 	}
 	

@@ -1,5 +1,7 @@
 package com.generation.javabnb.controller;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -16,11 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.generation.javabnb.exception.InvalidEntityException;
 import com.generation.javabnb.model.entities.Room;
 import com.generation.javabnb.model.entities.RoomBooking;
-import com.generation.javabnb.model.entities.User;
+import com.generation.javabnb.model.entities.Season;
+import com.generation.javabnb.model.entities.Customer;
+import com.generation.javabnb.model.dto.customer.CustomerDTOnoList;
+import com.generation.javabnb.model.dto.room.RoomDTOnoList;
 import com.generation.javabnb.model.dto.roombooking.RoomBookingDTO;
 import com.generation.javabnb.model.repositories.RoomBookingRepository;
 import com.generation.javabnb.model.repositories.RoomRepository;
-import com.generation.javabnb.model.repositories.UserRepository;
+import com.generation.javabnb.model.repositories.SeasonRepository;
+import com.generation.javabnb.model.repositories.CustomerRepository;
 
 @RestController
 @CrossOrigin
@@ -33,7 +39,10 @@ public class RoomBookingController
 	RoomRepository rRepo;
 	
 	@Autowired
-	UserRepository uRepo;
+	CustomerRepository cRepo;
+	
+	@Autowired
+	SeasonRepository sRepo;
 	
 	//---------------------------------------------------------GET ALL----------------------------------------------------------------------
 	
@@ -54,33 +63,90 @@ public class RoomBookingController
 	}
 	
 	//--------------------------------------------------------INSERT ONE-------------------------------------------------------------------
-	@PostMapping("/roombookings/{idRoom}/room/{emailUser}/user")
-	public RoomBookingDTO insert(@RequestBody RoomBookingDTO roombookingDTO, @PathVariable Integer idRoom, @PathVariable String emailUser)
+	@PostMapping("/roombookings/{id_room}/room/{id_customer}/customer")
+	public RoomBookingDTO insert(@RequestBody RoomBookingDTO roombookingDTO, @PathVariable Integer id_room, @PathVariable Integer id_customer)
 	{
-		RoomBooking toInsert = roombookingDTO.convertToRoomBooking();
 		
 		if(!roombookingDTO.isValid())
 			throw new InvalidEntityException("Dati prenotazione non validi");
-		if(rRepo.findById(idRoom).isEmpty())
-			throw new NoSuchElementException("Non esistono stanze con ID "+ idRoom);
-		if(uRepo.findById(emailUser).isEmpty())
-			throw new NoSuchElementException("Non esistono clienti con email "+ emailUser);
+		if(rRepo.findById(id_room).isEmpty())
+			throw new NoSuchElementException("Non esistono stanze con ID "+ id_room);
+		if(cRepo.findById(id_customer).isEmpty())
+			throw new NoSuchElementException("Non esistono clienti con ID "+ id_customer);
 		
-		Room roomToInsert = rRepo.findById(idRoom).get();
-		User userToInsert = uRepo.findById(emailUser).get();
+		Room roomToInsert = rRepo.findById(id_room).get();
+		Customer userToInsert = cRepo.findById(id_customer).get();
 		
-		toInsert.setCustomer(userToInsert);
+		roombookingDTO.setCustomer(new CustomerDTOnoList(userToInsert));
+		roombookingDTO.setRoom(new RoomDTOnoList(roomToInsert));
+		
+		roombookingDTO.setTotalPrice(roombookingDTO.ottieniPrice());
+		
+		if(getSeasonPrice(roombookingDTO.getCheckIn(), roombookingDTO.getCheckOut(), roombookingDTO)>0)
+			roombookingDTO.setTotalPrice(roombookingDTO.ottieniPrice()+getSeasonPrice(roombookingDTO.getCheckIn(), roombookingDTO.getCheckOut(), roombookingDTO));
+		
+		RoomBooking toInsert = roombookingDTO.convertToRoomBooking();
 		toInsert.setRoom(roomToInsert);
+		toInsert.setCustomer(userToInsert);
+		toInsert = rBrepo.save(toInsert);
 		
-		userToInsert.getBookings().add(toInsert);
-		roomToInsert.getBookings().add(toInsert);
 		
-		uRepo.save(userToInsert);
-		
-		rRepo.save(roomToInsert);
-		
-		return new RoomBookingDTO(rBrepo.save(toInsert));
+		return new RoomBookingDTO(toInsert);
 	}
+	
+	private Double getSeasonPrice(LocalDate checkIn, LocalDate checkOut, RoomBookingDTO toBook) 
+	{
+		Double res = 0.0;
+		for(Season season : sRepo.findAll())
+			if(intersectionV2(checkIn, checkOut, season.getBegin(), season.getEnd())>0)
+				res+=intersectionV2(checkIn, checkOut, season.getBegin(), season.getEnd())*toBook.getRoom().getBase_price()*season.getPercent();
+		
+		return res;
+	} 
+
+	
+	private Integer intersection(LocalDate firstBegin, LocalDate firstEnd, LocalDate secondBegin, LocalDate secondEnd) 
+	{
+		Integer res = 0;
+		
+	 	int meseInizioPeriodo1 =firstBegin.getMonthValue();
+        int giornoInizioPeriodo1 = firstBegin.getDayOfMonth();
+        int meseFinePeriodo1 = firstEnd.getMonthValue();
+        int giornoFinePeriodo1 = firstEnd.getDayOfMonth();
+
+        int meseInizioPeriodo2 = secondBegin.getMonthValue();
+        int giornoInizioPeriodo2 = secondBegin.getDayOfMonth();
+        int meseFinePeriodo2 = secondEnd.getMonthValue();
+        int giornoFinePeriodo2 = secondEnd.getDayOfMonth();
+
+        // Calcola il mese e il giorno di inizio dell'intersezione
+        int meseInizioIntersezione = Math.max(meseInizioPeriodo1, meseInizioPeriodo2);
+        int giornoInizioIntersezione = Math.max(giornoInizioPeriodo1, giornoInizioPeriodo2);
+
+        // Calcola il mese e il giorno di fine dell'intersezione
+        int meseFineIntersezione = Math.min(meseFinePeriodo1, meseFinePeriodo2);
+        int giornoFineIntersezione = Math.min(giornoFinePeriodo1, giornoFinePeriodo2);
+
+        // Calcola il numero di giorni di intersezione
+        int giorniIntersezione = giornoFineIntersezione - giornoInizioIntersezione;
+
+        if (meseInizioIntersezione==meseFineIntersezione && giorniIntersezione >= 0) {
+            res+=giorniIntersezione;
+        } 
+        		
+		return res;
+	}
+	
+	private Integer intersectionV2(LocalDate firstBegin, LocalDate firstEnd, LocalDate secondBegin, LocalDate secondEnd) 
+	{
+		LocalDate periodBegin = firstBegin.isAfter(secondBegin)? firstBegin : secondBegin;
+		LocalDate periodEnd = firstEnd.isBefore(secondEnd)? firstEnd : secondEnd;
+		
+		Period period = periodBegin.until(periodEnd);
+		Integer days = period.getDays()+1;
+		return days;
+	}
+
 	
 	//------------------------------------------------------------UPDATE ONE-----------------------------------------------------------------
 	@PutMapping("/roombookings/{id}")

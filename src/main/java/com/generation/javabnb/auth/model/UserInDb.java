@@ -1,5 +1,8 @@
 package com.generation.javabnb.auth.model;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -18,5 +21,18 @@ public class UserInDb
 	
 	private String password;
 	
+	public boolean isEmailValid()
+	{
+		if(username==null || username.isBlank())
+			return false;
+		String regex = "^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+
+		Pattern pattern = Pattern.compile(regex);
+		
+		Matcher matcher = pattern.matcher(username);
+		return matcher.matches();
+		
+	}
+
 	
 }
