@@ -18,11 +18,7 @@ import lombok.Setter;
 public class Season 
 {
 	@Id
-<<<<<<< HEAD
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-=======
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
->>>>>>> 91c9363ac771d4636fe9748f6403db350bcf8902
 	private Integer id;
 	private String name;
 	private LocalDate begin;
@@ -31,7 +27,6 @@ public class Season
 	
 	public Season() {};
 	
-<<<<<<< HEAD
 //	 public Season(String season, String begin, String end, Double percent) 
 //	 {
 //	    this.name = season;
@@ -47,7 +42,7 @@ public class Season
 //	    this.end = end; 
 //	    this.percent = percent;
 //    }
-=======
+
 	 public Season(String season, String begin, String end, Double percent) 
 	 {
 	    this.name = season;
@@ -57,6 +52,5 @@ public class Season
     }
 	
 	
->>>>>>> e8c8995452c0547b3271ae9638ee8cb15b441d69
-	
+
 }

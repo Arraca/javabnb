@@ -15,19 +15,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.javabnb.exception.InvalidEntityException;
-import com.generation.javabnb.model.dto.user.CustomerDTO;
-import com.generation.javabnb.model.dto.user.CustomerDTOnoList;
-import com.generation.javabnb.model.dto.user.EmployeeDTO;
+import com.generation.javabnb.model.dto.customer.CustomerDTO;
+import com.generation.javabnb.model.dto.customer.CustomerDTOnoList;
+import com.generation.javabnb.model.dto.employee.EmployeeDTO;
 import com.generation.javabnb.model.entities.RoomBooking;
-import com.generation.javabnb.model.entities.User;
+import com.generation.javabnb.model.entities.Customer;
+import com.generation.javabnb.model.repositories.CustomerRepository;
 import com.generation.javabnb.model.repositories.RoomBookingRepository;
 
 @RestController
 @CrossOrigin
-public class UserController 
+public class CustomerController 
 {
 	@Autowired
-	com.generation.javabnb.model.repositories.UserRepository uRepo;
+	CustomerRepository cRepo;
 	
 	@Autowired
 	RoomBookingRepository rbRepo;
@@ -39,10 +40,10 @@ public class UserController
 	 * - il backend non riesce a comunicare con il DB.
 	 * @return
 	 */
-	@GetMapping("/users/customers")
+	@GetMapping("/customers")
 	public List<CustomerDTO> findAllCustomers()
 	{
-		return uRepo.findAll().stream().filter(user -> user.getType().equalsIgnoreCase("Customer")).map(customer -> new CustomerDTO(customer)).toList();
+		return cRepo.findAll().stream().map(customer -> new CustomerDTO(customer)).toList();
 	}
 	
 	/**
@@ -51,10 +52,10 @@ public class UserController
 	 * - il backend non riesce a comunicare con il DB.
 	 * @return
 	 */
-	@GetMapping("/users/customers/full")
+	@GetMapping("/customers/full")
 	public List<CustomerDTO> findAllCustomersFull()
 	{
-		return uRepo.findAll().stream().filter(user -> user.getType().equalsIgnoreCase("Customer")).map(customer -> new CustomerDTO(customer)).toList();
+		return cRepo.findAll().stream().map(customer -> new CustomerDTO(customer)).toList();
 	}
 	
 	/**
@@ -63,26 +64,12 @@ public class UserController
 	 * - il backend non riesce a comunicare con il DB.
 	 * @return
 	 */
-	@GetMapping("/users/customers/nolist")
+	@GetMapping("/customers/nolist")
 	public List<CustomerDTOnoList> findAllCustomersNoList()
 	{
-		return uRepo.findAll().stream().filter(user -> user.getType().equalsIgnoreCase("Customer")).map(customer -> new CustomerDTOnoList(customer)).toList();
+		return cRepo.findAll().stream().map(customer -> new CustomerDTOnoList(customer)).toList();
 	}
 
-	//----------------------------------------------GET ALL EMPLOYEES---------------------------------------------------------
-	
-	/**
-	 * Restituisce una lista di employees.
-	 * Il metodo fallisce quando :
-	 * - il backend non riesce a comunicare con il DB.
-	 * @return
-	 */
-	@GetMapping("/users/employees")
-	public List<EmployeeDTO> findAllEmployees()
-	{
-		return uRepo.findAll().stream().filter(user -> user.getType().equalsIgnoreCase("Employee")).map(employee -> new EmployeeDTO(employee)).toList();
-	}
-	
 	//---------------------------------------------GET CUSTOMER BY EMAIL-----------------------------------------------------------
 	/**
 	 * Metodo che legge un Customer completo di lista dal DB in funzione dell'ID.
@@ -94,15 +81,13 @@ public class UserController
 	 * @param email
 	 * @return
 	 */
-	@GetMapping("/users/customers/{email}")
-	public CustomerDTO findCustomerByEmail (@PathVariable String email)
+	@GetMapping("/customers/{id}")
+	public CustomerDTO findCustomerByEmail (@PathVariable Integer id)
 	{
-		if(uRepo.findById(email).isEmpty())
-			throw new NoSuchElementException("Non ci sono users con id "+email+" nel DB");
-		if(!uRepo.findById(email).get().getType().equalsIgnoreCase("customer"))
-			throw new NoSuchElementException("La mail inserita non corrisponde ad un customer ma ad un employee!");
+		if(cRepo.findById(id).isEmpty())
+			throw new NoSuchElementException("Non ci sono users con id "+id+" nel DB");
 		
-		return new CustomerDTO(uRepo.findById(email).get());
+		return new CustomerDTO(cRepo.findById(id).get());
 	}
 	
 	/**
@@ -115,13 +100,13 @@ public class UserController
 	 * @param email
 	 * @return
 	 */
-	@GetMapping("/users/customers/{email}/full")
-	public CustomerDTO findCustomerByEmailFull (@PathVariable String email)
+	@GetMapping("/customers/{id}/full")
+	public CustomerDTO findCustomerByEmailFull (@PathVariable Integer id)
 	{
-		if(uRepo.findById(email).isEmpty())
-			throw new NoSuchElementException("Non ci sono users con id "+email+" nel DB");
+		if(cRepo.findById(id).isEmpty())
+			throw new NoSuchElementException("Non ci sono users con id "+id+" nel DB");
 		
-		return new CustomerDTO(uRepo.findById(email).get());
+		return new CustomerDTO(cRepo.findById(id).get());
 	}
 	
 	/**
@@ -134,16 +119,16 @@ public class UserController
 	 * @param email
 	 * @return
 	 */
-	@GetMapping("/users/customers/{email}/nolist")
-	public CustomerDTOnoList findCustomerByEmailNoList (@PathVariable String email)
+	@GetMapping("/customers/{id}/nolist")
+	public CustomerDTOnoList findCustomerByEmailNoList (@PathVariable Integer id)
 	{
-		if(uRepo.findById(email).isEmpty())
-			throw new NoSuchElementException("Non ci sono users con id "+email+" nel DB");
+		if(cRepo.findById(id).isEmpty())
+			throw new NoSuchElementException("Non ci sono users con id "+id+" nel DB");
 		
-		return new CustomerDTOnoList(uRepo.findById(email).get());
+		return new CustomerDTOnoList(cRepo.findById(id).get());
 	}
 
-	//---------------------------------------------GET CUSTOMER BY NUMERIC ID--------------------------------------------
+	//---------------------------------------------GET CUSTOMER BY NAME--------------------------------------------
 //	/**
 //	 * Metodo che legge un Customer completo di lista dal DB in funzione dell'ID.
 //	 * Parametri: ID che arriva come Integer.
@@ -201,30 +186,6 @@ public class UserController
 //		return new CustomerDTOnoList(uRepo.findById(email).get());
 //	}
 
-	//----------------------------------------------------GET EMPLOYEE BY EMAIL---------------------------------------------------------
-	
-	/**
-	 * Metodo che legge un Employee dal DB in funzione dell'email.
-	 * Parametri: email che arriva come String.
-	 * Il metodo fallisce quando:
-	 * - il parametro è mancante
-	 * - l'email passata come parametro non corrisponde a nessun User in DB
-	 * @param email
-	 * @return
-	 */
-	@GetMapping("/users/employees/{email}")
-	public EmployeeDTO findEmployeeByEmail (@PathVariable String email)
-	{
-		if(uRepo.findById(email).isEmpty())
-			throw new NoSuchElementException("Non ci sono users con id "+email+" nel DB");
-		if(!uRepo.findById(email).get().getType().equalsIgnoreCase("employee"))
-			throw new NoSuchElementException("La mail inserita non corrisponde ad un employee ma ad un customer!");
-
-		
-		return new EmployeeDTO(uRepo.findById(email).get());
-
-	}
-	
 	//-------------------------------------------------INSERT CUSTOMER------------------------------------------------------------
 
 	/**
@@ -234,20 +195,22 @@ public class UserController
 	 * @param toInsert
 	 * @return
 	 */
-	@PostMapping("/users/customers")
+	@PostMapping("/customers")
 	public CustomerDTOnoList insertCustomer(@RequestBody CustomerDTOnoList toInsert)
 	{
 		if(!toInsert.isValid())
 			throw new InvalidEntityException("I dati inseriti non sono validi. Inserirli nel modo corretto!");
-		if(!toInsert.isEmailValid())
-			throw new InvalidEntityException("La mail non è valida. Il formato deve essere \"user@example.com\"!");
+		
+		//--------------------------------NEL REGISTER------------------------------------------------
+		
+//		if(!toInsert.isEmailValid())
+//			throw new InvalidEntityException("La mail non è valida. Il formato deve essere \"user@example.com\"!");
 
 		
-		User res = toInsert.convertToUser();
-		res.setType("Customer");
+		Customer res = toInsert.convertToCustomer();
 		res.setBookings(new ArrayList<RoomBooking>());
 		
-		return new CustomerDTOnoList(uRepo.save(res));
+		return new CustomerDTOnoList(cRepo.save(res));
 
 	}
 	
@@ -259,43 +222,39 @@ public class UserController
 //
 //	}
 	
-	@PutMapping("/users/customers/{email}")
-	  public CustomerDTO updateOne(@PathVariable String email, @RequestBody CustomerDTO dto) 
+	@PutMapping("/customers/{id}")
+	  public CustomerDTO updateOne(@PathVariable Integer id, @RequestBody CustomerDTO dto) 
 	{
-	      if(uRepo.findById(email).isEmpty())
-	          throw new NoSuchElementException("Non ci sono users con email "+email+" nel DB");
+	      if(cRepo.findById(id).isEmpty())
+	          throw new NoSuchElementException("Non ci sono users con email "+id+" nel DB");
 	      if(!dto.isValid())
 	          throw new InvalidEntityException("Il cliente che vuoi inserire non è valido");
-	      if(!uRepo.findById(email).get().getType().equalsIgnoreCase("customer"))
-	    	  throw new InvalidEntityException("Non posso modificare ciò che non è un customer.");	    	  
 
-	      User old = uRepo.findById(email).get();
-	      User u = dto.convertToUser();
-	      u.setUsername(email);
-	      u.setBookings(new ArrayList<RoomBooking>());
-	      u.setType(old.getType());
+	      Customer old = cRepo.findById(id).get();
+	      Customer newCustomer = dto.convertToCustomer();
+	      newCustomer.setBookings(new ArrayList<RoomBooking>());
 	      
 	      if(old.getBookings().size()>0)
 	    	  for(RoomBooking rb : old.getBookings())
 	    	  {
-	    		  rb.setCustomer(u);
-	    		  u.getBookings().add(rb);
+	    		  rb.setCustomer(newCustomer);
+	    		  newCustomer.getBookings().add(rb);
 	    	  }
 	    		  
 	
-	      return new CustomerDTO(uRepo.save(u));
+	      return new CustomerDTO(cRepo.save(newCustomer));
 	}
 	
 	
 	//------------------------------------------------------DELETE CUSTOMER------------------------------------------------------------
 	
-	@DeleteMapping("users/customers/{email}")
-    public void deleteOne(@PathVariable String email)
+	@DeleteMapping("customers/{id}")
+    public void deleteOne(@PathVariable Integer id)
     {
-        if(uRepo.findById(email).isEmpty())
-            throw new NoSuchElementException("Non ci sono users con email "+email+" nel DB.");
+        if(cRepo.findById(id).isEmpty())
+            throw new NoSuchElementException("Non ci sono users con email "+id+" nel DB.");
 
-        uRepo.deleteById(email);
+        cRepo.deleteById(id);
     }
 	
 	

@@ -21,8 +21,8 @@ import com.generation.javabnb.auth.model.JwtRequest;
 import com.generation.javabnb.auth.model.JwtResponse;
 import com.generation.javabnb.auth.model.UserInDb;
 import com.generation.javabnb.auth.service.UserRepositoryAuth;
-import com.generation.javabnb.model.dto.user.CustomerDTO;
-import com.generation.javabnb.model.repositories.UserRepository;
+import com.generation.javabnb.model.dto.customer.CustomerDTO;
+import com.generation.javabnb.model.repositories.CustomerRepository;
 
 @RestController
 @CrossOrigin
@@ -36,7 +36,7 @@ public class JwtAuthenticationController {
 	@Autowired
 	private UserRepositoryAuth repo;
 	@Autowired
-	private UserRepository uRepo;
+	private CustomerRepository uRepo;
 
 	
 	

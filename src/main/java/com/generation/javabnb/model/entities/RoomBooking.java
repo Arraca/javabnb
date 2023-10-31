@@ -1,6 +1,8 @@
 package com.generation.javabnb.model.entities;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,7 +10,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.generation.javabnb.model.repositories.SeasonRepository;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +25,8 @@ import lombok.Setter;
 @Setter
 public class RoomBooking
 {
+	
+	
 	@Id
 <<<<<<< HEAD
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -27,16 +36,23 @@ public class RoomBooking
 	private Integer id;
 	private LocalDate checkIn;
 	private LocalDate checkOut;
-	private Double modPrice;
 	private Double totalPrice;
-//	private String email;
 	private Boolean saved;
-	//private Season season;
+	
+//	private List<Season> seasons;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "room_id")
 	private Room room;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "email_user")
-	private User customer;
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
+	
+	
+	
+
+
+
+
+
 }

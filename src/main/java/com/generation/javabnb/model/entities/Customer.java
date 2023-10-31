@@ -1,32 +1,35 @@
 package com.generation.javabnb.model.entities;
 
-
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Deprecated class Customer extends User 
+@Entity
+@Getter
+@Setter
+public class Customer 
 {
-//	private Integer id;
-//	private String email;
-//	private String password;
-//	private String type;
-//
-//	private String name;
-//	private String surname;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+		
+	private String name;
+	private String surname;
+	private LocalDate dob;
+	private String username;
 	
-//	@OneToMany(mappedBy = "customer")
-//	private List<RoomBooking> bookings;
+	@OneToMany(mappedBy = "customer")
+	private List<RoomBooking> bookings;
+
+
 	
-//	public Customer() {}
-//	
-//	public Customer(Integer id, String email, String password, String type, String name, String surname) 
-//	{
-//		super(id, email, password, type ,name, surname);
-//	}
 
 }

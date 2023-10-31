@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.generation.javabnb.model.dto.customer.CustomerDTO;
 import com.generation.javabnb.model.dto.room.RoomDTO;
 import com.generation.javabnb.model.dto.room.RoomDTOnoList;
 import com.generation.javabnb.model.repositories.RoomRepository;
@@ -31,10 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.generation.javabnb.exception.InvalidEntityException;
 import com.generation.javabnb.model.dto.room.RoomDTO;
 import com.generation.javabnb.model.dto.room.RoomDTOnoList;
-import com.generation.javabnb.model.dto.user.CustomerDTO;
 import com.generation.javabnb.model.entities.Room;
 import com.generation.javabnb.model.entities.RoomBooking;
-import com.generation.javabnb.model.entities.User;
+import com.generation.javabnb.model.entities.Customer;
 import com.generation.javabnb.model.repositories.RoomRepository;
 
 
