@@ -38,6 +38,14 @@ public class SeasonDTO
                 return false;
     }
 
+    public boolean DateIsValid(LocalDate begin, LocalDate end)
+    {
+            if (end.isAfter(begin))
+                return true;
+            else 
+                return false;
+    }
+
 
     public boolean isValid()
     {

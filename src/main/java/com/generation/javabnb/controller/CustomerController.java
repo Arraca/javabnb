@@ -70,7 +70,7 @@ public class CustomerController
 		return cRepo.findAll().stream().map(customer -> new CustomerDTOnoList(customer)).toList();
 	}
 
-	//---------------------------------------------GET CUSTOMER BY EMAIL-----------------------------------------------------------
+	//---------------------------------------------GET CUSTOMER BY ID-----------------------------------------------------------
 	/**
 	 * Metodo che legge un Customer completo di lista dal DB in funzione dell'ID.
 	 * Parametri: ID che arriva come Integer.
@@ -128,63 +128,55 @@ public class CustomerController
 		return new CustomerDTOnoList(cRepo.findById(id).get());
 	}
 
-	//---------------------------------------------GET CUSTOMER BY NAME--------------------------------------------
-//	/**
-//	 * Metodo che legge un Customer completo di lista dal DB in funzione dell'ID.
-//	 * Parametri: ID che arriva come Integer.
-//	 * Il metodo fallisce quando:
-//	 * - il parametro è mancante
-//	 * - l'email passata come parametro non corrisponde a nessun Customer in DB
-//	 * 
-//	 * @param email
-//	 * @return
-//	 */
-//	@GetMapping("/users/customers/{id}")
-//	public CustomerDTO findCustomerById (@PathVariable Integer id)
-//	{
-//		if(uRepo.findByNumericId(id)isEmpty())
-//			throw new NoSuchElementException("Non ci sono users con id "+email+" nel DB");
-//		
-//		return new CustomerDTO(uRepo.findById(email).get());
-//	}
-//	
-//	/**
-//	 * Metodo che legge un Customer completo di lista dal DB in funzione dell'ID.
-//	 * Parametri: ID che arriva come Integer.
-//	 * Il metodo fallisce quando:
-//	 * - il parametro è mancante
-//	 * - l'email passata come parametro non corrisponde a nessun Customer in DB
-//	 * 
-//	 * @param email
-//	 * @return
-//	 */
-//	@GetMapping("/users/customers/{email}/full")
-//	public CustomerDTO findCustomerByIdFull (@PathVariable String email)
-//	{
-//		if(uRepo.findById(email).isEmpty())
-//			throw new NoSuchElementException("Non ci sono users con id "+email+" nel DB");
-//		
-//		return new CustomerDTO(uRepo.findById(email).get());
-//	}
-//	
-//	/**
-//	 * Metodo che legge un Customer senza lista dal DB in funzione dell'ID.
-//	 * Parametri: ID che arriva come Integer.
-//	 * Il metodo fallisce quando:
-//	 * - il parametro è mancante
-//	 * - l'email passata come parametro non corrisponde a nessun Customer in DB
-//	 * 
-//	 * @param email
-//	 * @return
-//	 */
-//	@GetMapping("/users/customers/{email}/nolist")
-//	public CustomerDTOnoList findCustomerByIdNoList (@PathVariable String email)
-//	{
-//		if(uRepo.findById(email).isEmpty())
-//			throw new NoSuchElementException("Non ci sono users con id "+email+" nel DB");
-//		
-//		return new CustomerDTOnoList(uRepo.findById(email).get());
-//	}
+	//---------------------------------------------GET CUSTOMER BY USERNAME--------------------------------------------
+	/**
+	 * Metodo che legge un Customer completo di lista dal DB in funzione dell'ID.
+	 * Parametri: ID che arriva come Integer.
+	 * Il metodo fallisce quando:
+	 * - il parametro è mancante
+	 * - l'email passata come parametro non corrisponde a nessun Customer in DB
+	 * 
+	 * @param email
+	 * @return
+	 */
+	@GetMapping("/customers/{username}/username")
+	public CustomerDTO findCustomerById (@PathVariable String username)
+	{
+		if(cRepo.findByUsername(username).isEmpty())
+			throw new NoSuchElementException("Non ci sono users con email "+username+" nel DB");
+		
+		return new CustomerDTO(cRepo.findByUsername(username).get(0));
+	}
+	
+	/**
+	 * Metodo che legge un Customer completo di lista dal DB in funzione dell'ID.
+	 * Parametri: ID che arriva come Integer.
+	 * Il metodo fallisce quando:
+	 * - il parametro è mancante
+	 * - l'email passata come parametro non corrisponde a nessun Customer in DB
+	 * 
+	 * @param email
+	 * @return
+	 */
+	@GetMapping("/customers/{username}/username/full")
+	public CustomerDTO findFullCustomerById (@PathVariable String username)
+	{
+		if(cRepo.findByUsername(username).isEmpty())
+			throw new NoSuchElementException("Non ci sono users con email "+username+" nel DB");
+		
+		return new CustomerDTO(cRepo.findByUsername(username).get(0));
+	}
+	
+	@GetMapping("/customers/{username}/username/nolist")
+	public CustomerDTOnoList findNoListCustomerById (@PathVariable String username)
+	{
+		if(cRepo.findByUsername(username).isEmpty())
+			throw new NoSuchElementException("Non ci sono users con email "+username+" nel DB");
+		
+		return new CustomerDTOnoList(cRepo.findByUsername(username).get(0));
+	}
+
+	
 
 	//-------------------------------------------------INSERT CUSTOMER------------------------------------------------------------
 
