@@ -8,13 +8,11 @@ import com.generation.javabnb.model.entities.RoomBooking;
 
 import lombok.Getter;
 import lombok.Setter;
-
 @Getter
 @Setter
 public class RoomDTO extends GenericRoomDTO 
 {
 
-	
 	private List<RoomBookingDTO> bookings;
 
 	

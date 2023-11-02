@@ -7,7 +7,6 @@ import com.generation.javabnb.model.entities.Room;
 
 import lombok.Getter;
 import lombok.Setter;
-
 @Getter
 @Setter
 public class RoomDTOnoList extends GenericRoomDTO

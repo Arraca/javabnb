@@ -2,6 +2,8 @@ package com.generation.javabnb.controller.util;
 
 import java.util.NoSuchElementException;
 
+import javax.management.openmbean.KeyAlreadyExistsException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
@@ -76,10 +78,27 @@ public class GestoreEccezioni
 		return new ResponseEntity<String>("Non sono riuscito a comunicare con il database. Credenziali errate.", HttpStatus.SERVICE_UNAVAILABLE);
 	}
 	
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<String> handleIllegalArgumentException (IllegalArgumentException e)
+	{
+		return new ResponseEntity<String>("Parametro mancante nel'URI. Inserisci il parametro babbeo!",HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(KeyAlreadyExistsException.class)
+	public ResponseEntity<String> handleKeyAlreadyExistsException(KeyAlreadyExistsException e)
+	{
+		return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	
+	
 //	@ExceptionHandler(RuntimeException.class)
 //	public ResponseEntity<String> handleRuntimeException(RuntimeException e)
 //	{
+//		if(e instanceof IllegalArgumentException)
+//			return handleIllegalArgumentException((IllegalArgumentException) e);
 //		return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 //	}
+
 
 }

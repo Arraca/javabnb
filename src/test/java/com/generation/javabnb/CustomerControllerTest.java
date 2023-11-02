@@ -70,7 +70,7 @@ class CustomerControllerTest
 		.andExpect(MockMvcResultMatchers.content().string("Parametro mancante nel'URI. Inserisci il parametro babbeo!"));
 		
 		//PARAMETRO NON NUMERICO
-		mock.perform(MockMvcRequestBuilders.get("/customers/ ").header("Authorization", token))
+		mock.perform(MockMvcRequestBuilders.get("/customers/paperino").header("Authorization", token))
 		.andExpect(status().isBadRequest())
 		.andExpect(MockMvcResultMatchers.content().string("Occhio al parametro in ingresso."));
 		
@@ -80,6 +80,8 @@ class CustomerControllerTest
 		mock.perform(MockMvcRequestBuilders.get("/customers/"+idTest).header("Authorization", token))
 		.andExpect(status().isNotFound())
 		.andExpect(MockMvcResultMatchers.content().string("Non ci sono users con id "+idTest+" nel DB"));
+		
+		 
 
 
 

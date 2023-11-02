@@ -2,6 +2,8 @@ package com.generation.javabnb.auth.controller;
 
 import java.util.Objects;
 
+import javax.management.openmbean.KeyAlreadyExistsException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +23,7 @@ import com.generation.javabnb.auth.model.JwtRequest;
 import com.generation.javabnb.auth.model.JwtResponse;
 import com.generation.javabnb.auth.model.UserInDb;
 import com.generation.javabnb.auth.service.UserRepositoryAuth;
+import com.generation.javabnb.exception.InvalidEntityException;
 import com.generation.javabnb.model.dto.customer.CustomerDTO;
 import com.generation.javabnb.model.repositories.CustomerRepository;
 
@@ -45,7 +48,8 @@ public class JwtAuthenticationController {
 
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
-			throws Exception {
+			throws Exception 
+	{
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -61,6 +65,10 @@ public class JwtAuthenticationController {
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody UserInDb user)
 	{
+		if(!user.isUsernameValid())
+			throw new InvalidEntityException("L'email non è nel formato corretto: user@example.com");
+		if(repo.findById(user.getUsername()).isPresent())
+			throw new KeyAlreadyExistsException("L'email è già presente nel DB");
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));//criptando la password
 		repo.save(user);
 		UserDetails userDetails = jwtInMemoryUserDetailsService

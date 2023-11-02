@@ -21,7 +21,7 @@ public class UserInDb
 	
 	private String password;
 	
-	public boolean isEmailValid()
+	public boolean isUsernameValid()
 	{
 		if(username==null || username.isBlank())
 			return false;

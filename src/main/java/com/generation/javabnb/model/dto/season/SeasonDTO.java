@@ -14,8 +14,8 @@ public class SeasonDTO
 {
 	protected Integer id;
     protected String name;
-    protected String begin;
-    protected String end;
+    protected LocalDate begin;
+    protected LocalDate end;
     protected Double percent;
 
     public SeasonDTO() {}
@@ -24,33 +24,34 @@ public class SeasonDTO
     {
         id=s.getId();
         name=s.getName();
-        begin=s.getBegin()+"";
-        end=s.getEnd()+"";
+        begin=s.getBegin();
+        end=s.getEnd();
         percent=s.getPercent();
 
     }
 
-    public boolean DateIsValid(String begin,String end)
+    public boolean DateIsValid()
     {
-        try 
-        {
-            if (LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd")).isAfter(LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+            if (end.isAfter(begin))
                 return true;
             else 
                 return false;
-        }
-        catch (DateTimeParseException e) 
-        {
-            return false; 
-        }
+    }
+
+    public boolean DateIsValid(LocalDate begin, LocalDate end)
+    {
+            if (end.isAfter(begin))
+                return true;
+            else 
+                return false;
     }
 
 
     public boolean isValid()
     {
-        return name!=null && !name.isBlank()  &&
-               begin != null && end != null;
-
+        return name!=null 		&& !name.isBlank()  &&
+               begin != null 	&& end != null 		&&
+               DateIsValid()	;
 
     }
     
@@ -59,8 +60,8 @@ public class SeasonDTO
         Season res = new Season();
         res.setId(id);
         res.setName(name);
-        res.setBegin(LocalDate.parse(begin, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        res.setEnd(LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        res.setBegin(begin);
+        res.setEnd(end);
         res.setPercent(percent);
 
 
