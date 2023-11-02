@@ -16,17 +16,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.javabnb.exception.InvalidEntityException;
-import com.generation.javabnb.model.entities.Room;
-import com.generation.javabnb.model.entities.RoomBooking;
-import com.generation.javabnb.model.entities.Season;
-import com.generation.javabnb.model.entities.Customer;
 import com.generation.javabnb.model.dto.customer.CustomerDTOnoList;
 import com.generation.javabnb.model.dto.room.RoomDTOnoList;
 import com.generation.javabnb.model.dto.roombooking.RoomBookingDTO;
+import com.generation.javabnb.model.dto.roombooking.RoomBookingDTOnoCustomer;
+import com.generation.javabnb.model.entities.Customer;
+import com.generation.javabnb.model.entities.Room;
+import com.generation.javabnb.model.entities.RoomBooking;
+import com.generation.javabnb.model.entities.Season;
+import com.generation.javabnb.model.repositories.CustomerRepository;
 import com.generation.javabnb.model.repositories.RoomBookingRepository;
 import com.generation.javabnb.model.repositories.RoomRepository;
 import com.generation.javabnb.model.repositories.SeasonRepository;
-import com.generation.javabnb.model.repositories.CustomerRepository;
 
 @RestController
 @CrossOrigin
@@ -51,6 +52,12 @@ public class RoomBookingController
 	{
 		return rBrepo.findAll().stream().map(roomB -> new RoomBookingDTO(roomB)).toList();
 	}
+	
+	@GetMapping("/roombookings/nolist")
+    public List<RoomBookingDTOnoCustomer> getAllNoList()
+    {
+        return rBrepo.findAll().stream().map(room-> new RoomBookingDTOnoCustomer(room)).toList();
+    }
 
 	//----------------------------------------------------------GET ONE-----------------------------------------------------------------
 	@GetMapping("/roombookings/{id}")
