@@ -27,13 +27,13 @@ public class Season
 	
 	public Season() {};
 	
-	 public Season(String season, String begin, String end, Double percent) 
-	 {
-	    this.name = season;
-	    this.begin = LocalDate.parse(begin, DateTimeFormatter.ofPattern("yyyy-MM-dd")); 
-	    this.end = LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd")); 
-	    this.percent = percent;
-    }
+//	 public Season(String season, String begin, String end, Double percent) 
+//	 {
+//	    this.name = season;
+//	    this.begin = LocalDate.parse(begin, DateTimeFormatter.ofPattern("yyyy-MM-dd")); 
+//	    this.end = LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd")); 
+//	    this.percent = percent;
+//    }
 	
 	
 }
