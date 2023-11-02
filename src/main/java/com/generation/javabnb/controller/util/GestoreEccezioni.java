@@ -76,10 +76,10 @@ public class GestoreEccezioni
 		return new ResponseEntity<String>("Non sono riuscito a comunicare con il database. Credenziali errate.", HttpStatus.SERVICE_UNAVAILABLE);
 	}
 	
-	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<String> handleRuntimeException(RuntimeException e)
-	{
-		return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-	}
+//	@ExceptionHandler(RuntimeException.class)
+//	public ResponseEntity<String> handleRuntimeException(RuntimeException e)
+//	{
+//		return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+//	}
 
 }

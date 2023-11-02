@@ -6,15 +6,15 @@ import com.generation.javabnb.model.dto.roombooking.RoomBookingDTO;
 import com.generation.javabnb.model.entities.Room;
 import com.generation.javabnb.model.entities.RoomBooking;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class RoomDTO extends GenericRoomDTO 
 {
 
-	private Integer id;
-	private String name;
-	private Integer capacity;
-	private Double base_price;
-	private String notes;
-	private String img_url;
+	
 	private List<RoomBookingDTO> bookings;
 
 	
@@ -31,12 +31,12 @@ public class RoomDTO extends GenericRoomDTO
 	public Room convertToRoom() 
 	{
 		Room res = new Room();
-		res.setId(id);
-		res.setName(name);
-		res.setCapacity(capacity);
-		res.setBase_price(base_price);
-		res.setNotes(notes);
-		res.setImg_url(img_url);
+		res.setId(super.getId());
+		res.setName(super.getName());
+		res.setCapacity(super.getCapacity());
+		res.setBase_price(super.getBase_price());
+		res.setNotes(super.getNotes());
+		res.setImg_url(super.getImg_url());
 		res.setBookings(bookings.stream().map(bookingDTO -> bookingDTO.convertToRoomBooking()).toList());
 		return res;
 	}

@@ -23,6 +23,7 @@ import com.generation.javabnb.model.entities.Customer;
 import com.generation.javabnb.model.dto.customer.CustomerDTOnoList;
 import com.generation.javabnb.model.dto.room.RoomDTOnoList;
 import com.generation.javabnb.model.dto.roombooking.RoomBookingDTO;
+import com.generation.javabnb.model.dto.roombooking.RoomBookingDTOnoCustomer;
 import com.generation.javabnb.model.repositories.RoomBookingRepository;
 import com.generation.javabnb.model.repositories.RoomRepository;
 import com.generation.javabnb.model.repositories.SeasonRepository;
@@ -52,6 +53,14 @@ public class RoomBookingController
 		return rBrepo.findAll().stream().map(roomB -> new RoomBookingDTO(roomB)).toList();
 	}
 
+	//----------------------------------------GET ALL NO CUSTOMER--------------------------------------------------------------------
+		@GetMapping("/roombookings/nolist")
+		public List<RoomBookingDTOnoCustomer> getAllNoList()
+		{
+			return rBrepo.findAll().stream().map(room-> new RoomBookingDTOnoCustomer(room)).toList();
+		}
+	
+	
 	//----------------------------------------------------------GET ONE-----------------------------------------------------------------
 	@GetMapping("/roombookings/{id}")
 	public RoomBookingDTO getById(@PathVariable Integer id)
@@ -61,6 +70,7 @@ public class RoomBookingController
 
 		return new RoomBookingDTO(rBrepo.findById(id).get());
 	}
+	
 	
 	//--------------------------------------------------------INSERT ONE-------------------------------------------------------------------
 	@PostMapping("/roombookings/{id_room}/room/{id_customer}/customer")
