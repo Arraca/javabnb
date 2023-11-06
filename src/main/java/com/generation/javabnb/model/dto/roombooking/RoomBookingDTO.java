@@ -29,7 +29,7 @@ public class RoomBookingDTO
 	private LocalDate checkOut;
 	private Double totalPrice;
 	private Boolean saved;
-	private Season season;
+//	private Season season;
 
 	private RoomDTOnoList room;
 	private CustomerDTOnoList customer;

@@ -188,7 +188,7 @@ public class CustomerController
 	 * @return
 	 */
 	@PostMapping("/customers")
-	public CustomerDTOnoList insertCustomer(@RequestBody CustomerDTOnoList toInsert)
+	public CustomerDTO insertCustomer(@RequestBody CustomerDTOnoList toInsert)
 	{
 		if(!toInsert.isValid())
 			throw new InvalidEntityException("I dati inseriti non sono validi. Inserirli nel modo corretto!");
@@ -202,7 +202,7 @@ public class CustomerController
 		Customer res = toInsert.convertToCustomer();
 		res.setBookings(new ArrayList<RoomBooking>());
 		
-		return new CustomerDTOnoList(cRepo.save(res));
+		return new CustomerDTO(cRepo.save(res));
 
 	}
 	

@@ -46,6 +46,18 @@ public class EmployeeController
 
 	}
 	
+	//-------------------------------GET ONE BY USERNAME----------------------
+	@GetMapping("/employees/{username}/username")
+	public EmployeeDTO findByUsername(@PathVariable String username)
+	{
+		if(eRepo.findByUsername(username).isEmpty())
+			throw new NoSuchElementException("Non ci sono users con username "+username+" nel DB");
+
+		
+		return new EmployeeDTO(eRepo.findByUsername(username).get(0));
+
+	}
+	
 	//-------------------------------POST--------------------------------------
 	@PostMapping("/employees")
 	public EmployeeDTO insertEmployee(@RequestBody EmployeeDTO toInsert)
