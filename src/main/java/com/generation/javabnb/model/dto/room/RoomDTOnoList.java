@@ -12,7 +12,7 @@ import lombok.Setter;
 public class RoomDTOnoList extends GenericRoomDTO
 {
 
-	
+	public RoomDTOnoList() {};
 
 	public RoomDTOnoList(Room room) 
 	{

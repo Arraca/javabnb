@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.generation.javabnb.model.dto.customer.CustomerDTO;
 import com.generation.javabnb.model.dto.room.RoomDTO;
 import com.generation.javabnb.model.dto.room.RoomDTOnoList;
+import com.generation.javabnb.model.repositories.ImagesRepository;
 import com.generation.javabnb.model.repositories.RoomRepository;
 
 import javassist.expr.NewArray;
@@ -46,6 +47,9 @@ public class RoomController
 
 	@Autowired
 	RoomRepository rRepo;
+	
+	@Autowired 
+	ImagesRepository iRepo;
 	
 	//----------------------------------------------------GET ALL-----------------------------------------------------------
 	/**
@@ -174,9 +178,9 @@ public class RoomController
 	 * @return
 	 */
 	@PutMapping("rooms/{id}")
-	public RoomDTO updateRoom(@RequestBody RoomDTO toUpdate, @PathVariable Integer id)
+	public RoomDTOnoList updateRoom(@RequestBody RoomDTOnoList toUpdate, @PathVariable Integer id)
 	{
-		if(!rRepo.findById(id).isEmpty())
+		if(rRepo.findById(id).isEmpty())
 			throw new NoSuchElementException("Non ci sono stanze con id "+id+" nel DB, non posso eseguire la modifica!");
 		if(!toUpdate.isValid())
 			throw new InvalidEntityException("La camera che si desidera inserire non è valida");
@@ -195,7 +199,7 @@ public class RoomController
 	    	  }
 	    		  
 	
-	      return new RoomDTO(rRepo.save(room));
+	      return new RoomDTOnoList(rRepo.save(room));
 
 	}
 	
@@ -212,7 +216,7 @@ public class RoomController
 	@DeleteMapping("rooms/{id}")
 	public void deleteRoom(@PathVariable Integer id)
 	{
-		if(!rRepo.findById(id).isEmpty())
+		if(rRepo.findById(id).isEmpty())
 			throw new NoSuchElementException("Non ci sono stanze con id "+id+" nel DB, non posso eseguire la modifica!");
 
 		rRepo.deleteById(id);

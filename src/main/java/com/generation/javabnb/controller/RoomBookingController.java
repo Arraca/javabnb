@@ -150,7 +150,7 @@ public class RoomBookingController
 		LocalDate periodEnd = firstEnd.isBefore(secondEnd)? firstEnd : secondEnd;
 		
 		Period period = periodBegin.until(periodEnd);
-		Integer days = period.getDays()+1;
+		Integer days = period.getDays();
 		return days;
 	}
 
@@ -172,6 +172,22 @@ public class RoomBookingController
 		
 		return new RoomBookingDTO(rBrepo.save(toUpdate));		
 		
+	}
+	
+	@PutMapping("/approve/{approve}/roombookings/{id}")
+	public RoomBookingDTO approveBooking(@PathVariable int id, @PathVariable Boolean approve)
+	{
+		if(rBrepo.findById(id).isEmpty())
+			throw new NoSuchElementException("Prenotazione da modificare non trovata");
+		
+		RoomBooking old = rBrepo.findById(id).get(); 
+		if(approve)
+			old.setSaved(true);
+		else
+			old.setSaved(false);
+
+		return new RoomBookingDTO(rBrepo.save(old));		
+
 	}
 	
 	//-------------------------------------------------------------DELETE ONE-------------------------------------------------------------------

@@ -4,6 +4,7 @@ import com.generation.javabnb.model.entities.Customer;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
