@@ -7,4 +7,6 @@ import com.generation.javabnb.model.entities.Room;
 public interface RoomRepository extends JpaRepository<Room, Integer> 
 {
 
+	void deleteByName(String string);
+
 }

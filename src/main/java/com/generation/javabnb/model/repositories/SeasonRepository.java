@@ -10,4 +10,6 @@ import java.util.List;
 public interface SeasonRepository extends JpaRepository<Season,Integer>
 {
 	List<Season> findByName(String name);
+
+	void deleteByName(String string);
 }
