@@ -151,7 +151,7 @@ public class RoomController
 	 * @return
 	 */
 	@PostMapping("rooms")
-	public RoomDTOnoList insertRoom(@RequestBody RoomDTOnoList toSave)
+	public RoomDTO insertRoom(@RequestBody RoomDTOnoList toSave)
 	{
 		if(!toSave.isValid())
 			throw new InvalidEntityException("La camera che si desidera inserire non è valida");
@@ -160,7 +160,7 @@ public class RoomController
 		res.setBookings(new ArrayList<RoomBooking>());
 
 		
-		return new RoomDTOnoList(rRepo.save(res)); 
+		return new RoomDTO(rRepo.save(res)); 
 	}
 	
 	//------------------------------------------PUT---------------------------------------------------
@@ -178,7 +178,7 @@ public class RoomController
 	 * @return
 	 */
 	@PutMapping("rooms/{id}")
-	public RoomDTOnoList updateRoom(@RequestBody RoomDTOnoList toUpdate, @PathVariable Integer id)
+	public RoomDTO updateRoom(@RequestBody RoomDTOnoList toUpdate, @PathVariable Integer id)
 	{
 		if(rRepo.findById(id).isEmpty())
 			throw new NoSuchElementException("Non ci sono stanze con id "+id+" nel DB, non posso eseguire la modifica!");
@@ -189,17 +189,17 @@ public class RoomController
 	      Room old = rRepo.findById(id).get();
 	      Room room = toUpdate.convertToRoom();
 	      room.setId(id);
-	      room.setBookings(new ArrayList<RoomBooking>());
+	      room.setBookings(old.getBookings());
 	      
-	      if(old.getBookings().size()>0)
-	    	  for(RoomBooking rb : old.getBookings())
-	    	  {
-	    		  rb.setRoom(room);
-	    		  room.getBookings().add(rb);
-	    	  }
-	    		  
+//	      if(old.getBookings().size()>0)
+//	    	  for(RoomBooking rb : old.getBookings())
+//	    	  {
+//	    		  rb.setRoom(room);
+//	    		  room.getBookings().add(rb);
+//	    	  }
+//	    		  
 	
-	      return new RoomDTOnoList(rRepo.save(room));
+	      return new RoomDTO(rRepo.save(room));
 
 	}
 	

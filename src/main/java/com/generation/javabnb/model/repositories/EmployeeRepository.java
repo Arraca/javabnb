@@ -9,4 +9,6 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> 
 {
 	List<Employee> findByUsername(String username);
+
+	void deleteByUsername(String string);
 }

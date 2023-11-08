@@ -146,6 +146,8 @@ public class RoomBookingController
 	
 	private Integer intersectionV2(LocalDate firstBegin, LocalDate firstEnd, LocalDate secondBegin, LocalDate secondEnd) 
 	{
+		if (firstBegin == null  ||	firstEnd == null || secondBegin == null || secondEnd == null) 
+            return 0;
 		LocalDate periodBegin = firstBegin.isAfter(secondBegin)? firstBegin : secondBegin;
 		LocalDate periodEnd = firstEnd.isBefore(secondEnd)? firstEnd : secondEnd;
 		

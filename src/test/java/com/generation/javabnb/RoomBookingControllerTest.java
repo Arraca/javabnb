@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDate;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,8 +16,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.generation.javabnb.model.dto.customer.CustomerDTOnoList;
+import com.generation.javabnb.model.dto.room.RoomDTOnoList;
 import com.generation.javabnb.model.dto.roombooking.RoomBookingDTO;
-import com.generation.javabnb.model.dto.roombooking.RoomBookingDTOnoCustomer;
 import com.generation.javabnb.model.entities.RoomBooking;
 import com.generation.javabnb.model.repositories.CustomerRepository;
 import com.generation.javabnb.model.repositories.RoomBookingRepository;
@@ -42,7 +45,8 @@ class RoomBookingControllerTest
 	@Autowired
 	SeasonRepository sRepo;
 	
-	String token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFjb21vQGdtYWlsLmNvbSIsImV4cCI6MTY5ODc4ODkyMCwiaWF0IjoxNjk4NzcwOTIwfQ.Lfgmj2OhKyiY4x48ojRWzt_wwHd5CWpM9LdPrNj_cQtpUAnwKmbVRTfgI6S2B427zZicVaiYe1TcowxV1xl2BA";
+	String token ="Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFjb21vQGdtYWlsLmNvbSIsImV4cCI6MTY5OTM4NDExMSwiaWF0IjoxNjk5MzY2MTExfQ.sGnHhXh1YdqlnsU5VoCfODhbd2QfEoXQ_XVkAoKabOybCzkOFqdMS5xUqYtkyfEP2zx7kBHC0oVMHicRLp9pXA";
+	
 	
 	
 	String JsonOneRoomBooking="{\r\n"
@@ -74,11 +78,7 @@ class RoomBookingControllerTest
 	
 	String JsonOneRoomBookingBrutto="{\r\n"
 			+ "    \"id\": 2,\r\n"
-			+ "    \"checkIn\": \"2023-11-05\",\r"
-			+ "    \"checkOut\": \"2023-11-10\",\r\n"
-			+ "    \"totalPrice\": 600.0,\r\n"
-			+ "    \"saved\": false,\r\n"
-			+ "    \"season\": null,\r\n"
+			+ "    \"che"
 			+ "    \"room\": {\r\n"
 			+ "        \"id\": 2,\r\n"
 			+ "        \"name\": \"Camera Deluxe\",\r\n"
@@ -139,7 +139,9 @@ class RoomBookingControllerTest
     {
         try 
         {
-            return new ObjectMapper().writeValueAsString(obj);
+            ObjectMapper om =  new ObjectMapper();
+            om.findAndRegisterModules();
+            return om.writeValueAsString(obj);
         }
         catch (Exception e)
         {
@@ -148,53 +150,88 @@ class RoomBookingControllerTest
     }
 	
 	
-	@Test
-	void insertOneRoomBooking() throws Exception
-	{
-		//INSERIMENTO DI UNA PRENOTAZIONE 
-		RoomBookingDTO prenotazioneValida = new RoomBookingDTO();
-//		prenotazioneValida.setCheckIn(LocalDate.of(2023,02,06));
-//		prenotazioneValida.setCheckOut(LocalDate.of(2023,02,10));
-		
-		String dtoJsonizzatoValido = asJsonString(prenotazioneValida);
-		mock.perform( MockMvcRequestBuilders
-			      .post("/roombookings/2/room/2/customer").header("Authorization", token)						
-			      .content("{\"checkIn\":\"2023-02-06\",\"checkOut\":\"2023-02-10\"}")				
-			      .contentType(MediaType.APPLICATION_JSON) 
-			      .accept(MediaType.APPLICATION_JSON))		
-		     		.andExpect(status().isOk());		
-		System.out.println("++++++++++++++++++++++++"+dtoJsonizzatoValido+"+++++++++++++++++++++++++"); 
-		RoomBookingDTO prenotazioneNonValida = new RoomBookingDTO();
-		prenotazioneNonValida.setCheckIn(LocalDate.of(2023,02,06));
-		prenotazioneNonValida.setCheckOut(LocalDate.of(2023,02,10));
-		
-		String dtoNonValidoJson = asJsonString(prenotazioneNonValida);
-		mock.perform( MockMvcRequestBuilders
-			      .post("/roombookings/2/room/999/customer").header("Authorization", token)							
-			      .content(dtoNonValidoJson)				
-			      .contentType(MediaType.APPLICATION_JSON) 
-			      .accept(MediaType.APPLICATION_JSON))		
-		     		.andExpect(status().isBadRequest());	
-		
-		//json incorretto
-		String dtoNonValidoJson2 = asJsonString(prenotazioneNonValida);
-		mock.perform( MockMvcRequestBuilders
-			      .post("/roombookings/200/room/2/customer").header("Authorization", token)							
-			      .content(dtoNonValidoJson2)				
-			      .contentType(MediaType.APPLICATION_JSON) 
-			      .accept(MediaType.APPLICATION_JSON))		
-		     		.andExpect(status().isBadRequest());	
-		
-		//parametro mancante
-		String dtoNonValidoJson3 = asJsonString(prenotazioneNonValida);
-		mock.perform( MockMvcRequestBuilders
-			      .post("/roombookings/2/room//customer").header("Authorization", token)							
-			      .content(dtoNonValidoJson)				
-			      .contentType(MediaType.APPLICATION_JSON) 
-			      .accept(MediaType.APPLICATION_JSON))		
-		     		.andExpect(status().isNotFound());	
-		
+	
+	
+		@Test
+		void testInsertOneRoomBooking() throws Exception
+		{
+			//DATI CORRETTI E JSON CORRETTO
+			RoomBookingDTO b =  new RoomBookingDTO();
+			b.setCheckIn(LocalDate.of(2022,10,10));	
+			b.setCheckOut(LocalDate.of(2022,10,18));
+			CustomerDTOnoList c = new CustomerDTOnoList();
+			c.setId(2);
+			RoomDTOnoList r = new RoomDTOnoList();
+			r.setId(2);
+			b.setCustomer(c);
+			b.setRoom(r);
+			
+			String dtoValido = asJsonString(b);
+			
+			mock.perform( MockMvcRequestBuilders
+				      .post("/roombookings/2/room/2/customer").header("Authorization", token)							
+				      .content(dtoValido)				
+				      .contentType(MediaType.APPLICATION_JSON) 
+				      .accept(MediaType.APPLICATION_JSON))		
+			     	  .andExpect(status().isOk());			
+			
+			//ROOMBOOKING INSERITA NON VALIDA
+			//CUSTOMER NON PRESENTE SUL DB
+			RoomBookingDTO prenotazioneNonValida = new RoomBookingDTO();
+			prenotazioneNonValida.setCheckIn(LocalDate.of(2023,02,06));
+			prenotazioneNonValida.setCheckOut(LocalDate.of(2023,02,10));
+			
+			String dtoNonValidoJson = asJsonString(prenotazioneNonValida);
+			Integer id_customer = 999;
+			mock.perform( MockMvcRequestBuilders
+				      .post("/roombookings/2/room/999/customer").header("Authorization", token)							
+				      .content(dtoNonValidoJson)				
+				      .contentType(MediaType.APPLICATION_JSON) 
+				      .accept(MediaType.APPLICATION_JSON))		
+			      	  .andExpect(status().isNotFound())
+			     	  .andExpect(MockMvcResultMatchers.content().string("Non esistono clienti con ID "+ id_customer));
+			
+			//ROOM NON PRESENTE SUL DB
+			String dtoNonValidoJson2 = asJsonString(prenotazioneNonValida);
+			Integer id_room = 999;
+			mock.perform( MockMvcRequestBuilders
+				      .post("/roombookings/999/room/2/customer").header("Authorization", token)							
+				      .content(dtoNonValidoJson2)				
+				      .contentType(MediaType.APPLICATION_JSON) 
+				      .accept(MediaType.APPLICATION_JSON))		
+			     	  .andExpect(status().isNotFound())	
+				      .andExpect(MockMvcResultMatchers.content().string("Non esistono stanze con ID "+ id_room));
+						
+			
+			
+			//PARAMETRO MANCANTE
+			String dtoNonValidoJson3 = asJsonString(prenotazioneNonValida);
+			mock.perform( MockMvcRequestBuilders
+				      .post("/roombookings/2/room//customer").header("Authorization", token)							
+				      .content(dtoNonValidoJson3)				
+				      .contentType(MediaType.APPLICATION_JSON) 
+				      .accept(MediaType.APPLICATION_JSON))		
+			     		.andExpect(status().isNotFound());	
+			
+			
+			//JSON NON CORRETTO
+			mock.perform( MockMvcRequestBuilders
+					.post("/roombookings/2/room/1/customer").header("Authorization", token)					
+				      .content(JsonOneRoomBookingBrutto)				
+				      .contentType(MediaType.APPLICATION_JSON) 
+				      .accept(MediaType.APPLICATION_JSON))
+			     		.andExpect(status().isBadRequest())
+			     		.andExpect(MockMvcResultMatchers.content().string("Il JSON non e in formato corretto!"));
+			
 		}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@Test	
 	void modifyOneRoomBooking() throws Exception 
@@ -215,7 +252,7 @@ class RoomBookingControllerTest
 			     		.andExpect(status().isNotFound())
 			     		.andExpect(MockMvcResultMatchers.content().string("Prenotazione da modificare non trovata"));
 			
-			
+			//JSON ERRATO
 			mock.perform( MockMvcRequestBuilders
 				      .put("/roombookings/2").header("Authorization", token)						
 				      .content(JsonOneRoomBookingBrutto)				
